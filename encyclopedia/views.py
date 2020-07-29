@@ -1,6 +1,8 @@
-import markdown2
+import markdown2, re
 
 from django.shortcuts import render
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 from . import util
 
@@ -25,3 +27,22 @@ def entry(request, title):
             'error_code': 404,
             'error_message': 'Page Not Found'
         })
+
+def search(request):
+    if request.method == 'POST':
+        # Obtain user input from search box
+        query = request.POST['q']
+        
+        # Direct user to page if there is exact match, otherwise display list of matches
+        if util.get_entry(query):
+            return HttpResponseRedirect(reverse('encyclopedia:entry', kwargs={'title': query}))
+        else:
+            entries = util.list_entries()
+            matching_entries = list()
+            for entry in entries:
+                if re.search(query, entry, re.IGNORECASE):
+                    matching_entries.append(entry)
+            return render(request, 'encyclopedia/search_results.html', {
+                'matches': matching_entries,
+                'query': query
+            })
