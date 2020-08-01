@@ -5,6 +5,7 @@
 <html lang="en">
     <head>
         <title>Wiki | {% block title %}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="{% static 'encyclopedia/styles.css' %}" rel="stylesheet">
     </head>
@@ -14,13 +15,14 @@
                 <h2>Wiki</h2>
                 <form action="{% url 'encyclopedia:search' %}" method="POST">
                     {% csrf_token %}
-                    <input class="search" type="text" name="q" placeholder="Search Encyclopedia">
+                    <input class="search" type="text" name="query" placeholder="Search Encyclopedia">
                 </form>
                 <div>
                     <a href="{% url 'encyclopedia:index' %}">Home</a>
                 </div>
                 <div>
-                    Create New Page
+                    <a href="{% url 'encyclopedia:new' %}">Create New Page</a>
+                    
                 </div>
                 <div>
                     Random Page

@@ -6,7 +6,6 @@ from django.http import HttpResponseRedirect
 
 from . import util
 
-
 def index(request):
     return render(request, 'encyclopedia/index.html', {
         'entries': util.list_entries()
@@ -31,7 +30,7 @@ def entry(request, title):
 def search(request):
     if request.method == 'POST':
         # Obtain user input from search box
-        query = request.POST['q']
+        query = request.POST['query']
         
         # Direct user to page if there is exact match, otherwise display list of matches
         if util.get_entry(query):
@@ -46,3 +45,26 @@ def search(request):
                 'matches': matching_entries,
                 'query': query
             })
+
+def new(request):
+    return render(request, 'encyclopedia/new_page.html')
+
+def save(request):
+    if request.method == 'POST':
+        title = request.POST['title'].strip()
+        content = request.POST['wiki-content']
+
+        # Check if entry already exists, otherwise save to disk
+        if util.get_entry(title):
+            return render(request, 'encyclopedia/error.html', {
+                'error_code': 403,
+                'error_message': 'Forbidden - Page Already Exists'
+            })
+        else:
+            util.save_entry(title, content)
+            return HttpResponseRedirect(reverse('encyclopedia:entry', kwargs={'title': title}))
+    else:
+        return render(request, 'encyclopedia/error.html', {
+            'error_code': 404,
+            'error_message': 'Page Not Found'
+        })
