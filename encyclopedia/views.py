@@ -1,4 +1,4 @@
-import markdown2, re
+import markdown2, re, random
 
 from django.shortcuts import render
 from django.urls import reverse
@@ -67,4 +67,16 @@ def save(request):
         return render(request, 'encyclopedia/error.html', {
             'error_code': 404,
             'error_message': 'Page Not Found'
+        })
+
+def random_page(request):
+    entries = util.list_entries()
+    
+    if entries:
+        random_selection = random.choice(entries)
+        return HttpResponseRedirect(reverse('encyclopedia:entry', kwargs={'title': random_selection}))
+    else:
+        return render(request, 'encyclopedia/error.html', {
+            'error_code': 404,
+            'error_message': 'It\'s not you, it\'s us.'
         })
