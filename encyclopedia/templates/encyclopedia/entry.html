@@ -4,4 +4,5 @@
 
 {% block body %}
     {{ html|safe }}
+    <p>[<a href="{% url 'encyclopedia:edit_page' title %}">edit</a>]</p>
 {% endblock %}

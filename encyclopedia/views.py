@@ -80,3 +80,18 @@ def random_page(request):
             'error_code': 404,
             'error_message': 'It\'s not you, it\'s us.'
         })
+
+def edit_page(request, title):  
+    if request.method == 'GET':
+        return render(request, 'encyclopedia/edit.html', {
+            'title': title,
+            'content': util.get_entry(title)
+        })
+    elif request.method == 'POST':
+        util.save_entry(request.POST['title'].strip(), request.POST['wiki-content'])
+        return HttpResponseRedirect(reverse('encyclopedia:entry', kwargs={'title': title}))
+    else:
+        return render(request, 'encyclopedia/error.html', {
+            'error_code': 404,
+            'error_message': 'Page Not Found'
+        })
