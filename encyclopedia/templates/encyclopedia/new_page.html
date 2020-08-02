@@ -4,12 +4,14 @@
 
 {% block body %}
 <h1>Create New Wiki Page</h1>
-<div class="form-group">
 <form action="{% url 'encyclopedia:save' %}" method="POST">
     {% csrf_token %}
-    <input class="form-control" type="text" name="title" placeholder="Wiki Page Title" required>
-    <textarea class="form-control" name="wiki-content" id="wiki-content" placeholder="Write your content in Markdown format here..." required></textarea>
-    <input class="btn btn-primary" type="submit" value="Save">
-</form>
-</div>
+        <div class="form-group">
+            <input class="form-control" type="text" name="title" placeholder="Wiki Page Title" required>
+        </div>
+        <div class="form-group">
+            <textarea class="form-control textarea" id="wiki-content" name="wiki-content" placeholder="Write your content in Markdown format here..." rows="20" required></textarea>
+        </div>
+        <input class="btn btn-primary" type="submit" value="Save">
+    </form>
 {% endblock %}
