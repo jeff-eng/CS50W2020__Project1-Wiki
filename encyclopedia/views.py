@@ -88,7 +88,7 @@ def edit_page(request, title):
             'content': util.get_entry(title)
         })
     elif request.method == 'POST':
-        util.save_entry(request.POST['title'].strip(), request.POST['wiki-content'])
+        util.save_entry(title, request.POST['wiki-content'])
         return HttpResponseRedirect(reverse('encyclopedia:entry', kwargs={'title': title}))
     else:
         return render(request, 'encyclopedia/error.html', {
